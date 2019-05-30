@@ -27,7 +27,7 @@ Enemy.prototype.update = function(dt) {
         const randomSpeed = Math.floor(Math.random() * 4 + 1);
         this.speed = 60 * randomSpeed;
     }
-    this.checkCollision();
+    this.checkCollisions();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,7 +36,7 @@ Enemy.prototype.render = function() {
 };
 
 // Check for collision
-Enemy.prototype.checkCollision = function() {
+Enemy.prototype.checkCollisions = function() {
     // Set hitbox
     const playerBox = {x: player.x, y: player.y, width: 50, height: 40};
     const enemyBox = {x: this.x, y: this.y, width: 60, height: 70};
@@ -60,15 +60,26 @@ Enemy.prototype.collisionHappen = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+const characters = ['images/char-boy.png',
+                    'images/char-cat-girl.png',
+                    'images/char-horn-girl.png',
+                    'images/char-pink-girl.png',
+                    'images/char-princess-girl.png'];
+
 const Player = function() {
-    this.sprite = 'images/char-boy.png';
-    this.x = 200;
-    this.y = 400;
+    // Choosing random character
+    this.sprite = characters[Math.floor(Math.random() * characters.length)];
+    this.x = 202;
+    this.y = 405;
 };
 
+Player.prototype.switchCharacter = function() {
+    this.sprite = characters[Math.floor(Math.random() * characters.length)];
+}
+
 Player.prototype.resetPosition = function() {
-    this.x = 200;
-    this.y = 400;
+    this.x = 202;
+    this.y = 405;
 };
 
 // Draw the player on the screen, required method for game
@@ -81,21 +92,65 @@ Player.prototype.handleInput = function(allowedKeys) {
     switch (allowedKeys) {
         case "left":
             // moveleft
-            this.x -= 101;
+            if (this.x > 0) {
+                this.x -= 101;
+            }
             break;
         case "right":
             // moveright
-            this.x += 101;
+            if (this.x < 404) {
+                this.x += 101;
+            }
             break;
         case "up":
             // move up
-            this.y -= 83;
+            if (this.y > 0) {
+                this.y -= 83;
+            }
             break;
         case "down":
             // move down
-            this.y += 83;
+            if (this.y < 404) {
+                this.y += 83;
+            }
             break;
     }
+};
+
+/*----------------------------------------------------------------------------*/
+/*------------------------------Selector--------------------------------------*/
+
+// Selector for user to switch character
+const Selector = function() {
+    this.sprite = 'images/Selector.png';
+    this.x = 404;
+    this.y = 380;
+}
+
+// Switch character when player step on selector
+Selector.prototype.update = function() {
+    this.switchCharacter();
+}
+
+Selector.prototype.switchCharacter = function() {
+    // Set hitbox
+    const playerBox = {x: player.x, y: player.y, width: 50, height: 40};
+    const selectorBox = {x: this.x, y: this.y, width: 60, height: 70};
+    // If playerBox intersects enemyBox, collision happens
+    if (playerBox.x < selectorBox.x + selectorBox.width &&
+        playerBox.x + playerBox.width > selectorBox.x &&
+        playerBox.y < selectorBox.y + selectorBox.height &&
+        playerBox.y + playerBox.height > selectorBox.y) {
+            setTimeout(function() {
+                player.resetPosition();
+                player.switchCharacter();
+            }, 50)
+        }
+}
+
+// Draw the Selector to the screen
+Selector.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -108,13 +163,16 @@ Player.prototype.handleInput = function(allowedKeys) {
 // Instantiate player
 const player = new Player();
 
+// Instantiate Selector
+const selector = new Selector();
+
 // allEnemies array
 var allEnemies = [];
 
 // Instantiate all enemies and push them to allEnemies array
 for (let i = 0; i < 3; i++) {
     const randomSpeed = Math.floor(Math.random() * 4 + 1);
-    allEnemies.push(new Enemy(0, 60 + (85 * i), 60 * randomSpeed));
+    allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
 }
 
 
