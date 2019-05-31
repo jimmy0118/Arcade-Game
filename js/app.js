@@ -188,6 +188,56 @@ Selector.prototype.render = function() {
 };
 
 /*----------------------------------------------------------------------------*/
+/*---------------------------------Gem----------------------------------------*/
+
+// Gem for player to get
+const Gem = function(x, y) {
+    this.sprite = 'images/Gem Blue.png';
+    this.x = x;
+    this.y = y;
+};
+
+// Update gem and checkCollisions
+Gem.prototype.update = function() {
+    this.checkCollisions();
+};
+
+// Draw the gem to the screen
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// function for checkCollisions
+Gem.prototype.checkCollisions = function() {
+    // Set hitbox
+    const playerBox = {x: player.x, y: player.y, width: 50, height: 40};
+    const gemBox = {x: this.x, y: this.y, width: 60, height: 70};
+    // If playerBox intersects enemyBox, collision happens
+    if (playerBox.x < gemBox.x + gemBox.width &&
+        playerBox.x + playerBox.width > gemBox.x &&
+        playerBox.y < gemBox.y + gemBox.height &&
+        playerBox.y + playerBox.height > gemBox.y) {
+            this.collisionHappen();
+        }
+};
+
+// function for collisionHappen
+Gem.prototype.collisionHappen = function() {
+    this.x += 1000;
+    this.y += 1000;
+    score += 20;
+    this.resetPosition();
+};
+
+// function for restPosition
+Gem.prototype.resetPosition = function() {
+    setTimeout(function() {
+        gem.x = (101 * Math.floor(Math.random() * 4) + 0);
+        gem.y = (60 + (83 * Math.floor(Math.random() * 3) + 0));
+    }, 7000);
+};
+
+/*----------------------------------------------------------------------------*/
 /*-------------------------Instantiate Objects--------------------------------*/
 
 // Now instantiate your objects.
@@ -208,6 +258,10 @@ for (let i = 0; i < 3; i++) {
     const randomSpeed = Math.floor(Math.random() * 10 + 1);
     allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
 }
+
+// Instantiate Gem
+const gem = new Gem(101 * Math.floor(Math.random() * 4) + 0, 60 +
+    (83 * Math.floor(Math.random() * 3) + 0));
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------Event Listener-----------------------------------*/
