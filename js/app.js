@@ -65,16 +65,22 @@ const characters = ['images/char-boy.png',
                     'images/char-horn-girl.png',
                     'images/char-pink-girl.png',
                     'images/char-princess-girl.png'];
+let index = 0;
 
 const Player = function() {
     // Choosing random character
-    this.sprite = characters[Math.floor(Math.random() * characters.length)];
+    this.sprite = characters[index];
     this.x = 202;
     this.y = 405;
 };
 
 Player.prototype.switchCharacter = function() {
-    this.sprite = characters[Math.floor(Math.random() * characters.length)];
+    if (index < 4) {
+        index += 1;
+    } else {
+        index = 0;
+    }
+    this.sprite = characters[index];
 }
 
 Player.prototype.resetPosition = function() {
@@ -141,12 +147,12 @@ Selector.prototype.switchCharacter = function() {
         playerBox.x + playerBox.width > selectorBox.x &&
         playerBox.y < selectorBox.y + selectorBox.height &&
         playerBox.y + playerBox.height > selectorBox.y) {
+            player.switchCharacter();
             setTimeout(function() {
                 player.resetPosition();
-                player.switchCharacter();
-            }, 50)
+            }, 0);
         }
-}
+};
 
 // Draw the Selector to the screen
 Selector.prototype.render = function() {
