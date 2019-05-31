@@ -10,11 +10,6 @@ const replay = document.querySelector('.replay');
 let lives = 5;
 let score = 0;
 
-function restart() {
-    lives = 5;
-    score = 0;
-}
-
 /*----------------------------------------------------------------------------*/
 /*-----------------------------Enemy------------------------------------------*/
 
@@ -245,3 +240,15 @@ replay.addEventListener('click', function(){
     restart();
     document.addEventListener('keyup', keyInput);
 });
+
+// Restart the initial game
+function restart() {
+    lives = 5;
+    score = 0;
+    allEnemies = [];
+    // Instantiate all enemies and push them to allEnemies array
+    for (let i = 0; i < 3; i++) {
+        const randomSpeed = Math.floor(Math.random() * 10 + 1);
+        allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
+    }
+}
