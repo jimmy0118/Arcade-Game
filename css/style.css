@@ -1,3 +1,21 @@
 body {
     text-align: center;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*
+ * Styles for the Score Panel
+ */
+ .score-board {
+     text-align: left;
+     width: 450px;
+     font-size: 25px;
+     font-family: 'Wendy One', sans-serif;
+     color: #263811;
+}

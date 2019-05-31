@@ -1,4 +1,15 @@
 /*----------------------------------------------------------------------------*/
+/*-----------------------------Score Board------------------------------------*/
+const panelLive = document.querySelector('.lives');
+const panelScore = document.querySelector('.score');
+
+// Initial score board
+let lives = 5;
+let score = 0;
+panelLive.textContent = `Lives: ${lives}`;
+panelScore.textContent = `Score: ${score}`;
+
+/*----------------------------------------------------------------------------*/
 /*-----------------------------Enemy------------------------------------------*/
 
 // Enemies our player must avoid
@@ -28,6 +39,8 @@ Enemy.prototype.update = function(dt) {
         this.speed = 60 * randomSpeed;
     }
     this.checkCollisions();
+    panelLive.textContent = `Lives: ${lives}`;
+    panelScore.textContent = `Score: ${score}`;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -52,6 +65,10 @@ Enemy.prototype.checkCollisions = function() {
 // Collision happen, reset player position
 Enemy.prototype.collisionHappen = function() {
     player.resetPosition();
+    // Decrease live when collision occur
+    if (lives > 1) {
+        lives -= 1;
+    }
 };
 
 /*----------------------------------------------------------------------------*/
@@ -112,6 +129,9 @@ Player.prototype.handleInput = function(allowedKeys) {
             // move up
             if (this.y > 0) {
                 this.y -= 83;
+            } else {
+                player.resetPosition();
+                score += 10;
             }
             break;
         case "down":
