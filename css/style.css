@@ -19,3 +19,51 @@ body {
      font-family: 'Wendy One', sans-serif;
      color: #263811;
 }
+
+/* The Modal (background) */
+.modal {
+   display: none; /* Hidden by default */
+   position: fixed; /* Stay in place */
+   z-index: 1; /* Sit on top */
+   left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgb(0,0,0); /* Fallback color */
+   background-color: rgba(230, 157, 157, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+   max-width: 800px;
+   background-color: #c8f9ff;
+   margin: 10% auto; /* 15% from the top and centered */
+   padding: 15px;
+   box-shadow: 0px 0px 4px 0px rgb(21, 19, 7);
+   border-radius: 45px;
+   width: 80%; /* Could be more or less, depending on screen size */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   font-family: 'Wendy One', sans-serif;
+   color: white;
+   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+   font-size: 30px;
+}
+
+.replay {
+   font-size: 40px;
+   cursor: pointer;
+   padding: 10px;
+   border-radius: 30px;
+   box-shadow: 4px 4px 12px 0px rgb(21, 19, 7);
+   margin: 5px;
+   transition: transform 0.5s;
+   background-color: #da5a86;
+}
+
+.replay:hover {
+   transform: scale(1.2, 1.2);
+}

@@ -1,13 +1,19 @@
 /*----------------------------------------------------------------------------*/
-/*-----------------------------Score Board------------------------------------*/
+/*-----------------------------Score Board and Modal--------------------------*/
 const panelLive = document.querySelector('.lives');
 const panelScore = document.querySelector('.score');
+const modal = document.querySelector('.modal');
+const modalScore = document.querySelector('.modal-score');
+const replay = document.querySelector('.replay');
 
-// Initial score board
+// Initial lives and score
 let lives = 5;
 let score = 0;
-panelLive.textContent = `Lives: ${lives}`;
-panelScore.textContent = `Score: ${score}`;
+
+function restart() {
+    lives = 5;
+    score = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-----------------------------Enemy------------------------------------------*/
@@ -31,16 +37,19 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dt;
+    if (lives > 0) {
+        this.x += this.speed * dt;
+    }
     // Reset the enemy after it goes off screen
     if (this.x > 505) {
         this.x = -100;
-        const randomSpeed = Math.floor(Math.random() * 4 + 1);
+        const randomSpeed = Math.floor(Math.random() * 10 + 1);
         this.speed = 60 * randomSpeed;
     }
     this.checkCollisions();
     panelLive.textContent = `Lives: ${lives}`;
     panelScore.textContent = `Score: ${score}`;
+    modalScore.textContent = `Your Score: ${score}`;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -66,8 +75,12 @@ Enemy.prototype.checkCollisions = function() {
 Enemy.prototype.collisionHappen = function() {
     player.resetPosition();
     // Decrease live when collision occur
-    if (lives > 1) {
-        lives -= 1;
+    lives -= 1;
+    // Game over when lives = 0
+    if (lives < 1) {
+        modal.style.display = 'block';
+        // Stop user from playing after game is over
+        document.removeEventListener('keyup', keyInput);
     }
 };
 
@@ -197,14 +210,16 @@ var allEnemies = [];
 
 // Instantiate all enemies and push them to allEnemies array
 for (let i = 0; i < 3; i++) {
-    const randomSpeed = Math.floor(Math.random() * 4 + 1);
+    const randomSpeed = Math.floor(Math.random() * 10 + 1);
     allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
 }
 
+/*----------------------------------------------------------------------------*/
+/*---------------------------Event Listener-----------------------------------*/
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+const keyInput = function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -213,4 +228,20 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+};
+
+document.addEventListener('keyup', keyInput);
+
+// When the user clicks anywhere outside of the modal, close it
+window.addEventListener('click', function(evt){
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+});
+
+// Set up the event listener for replay button
+replay.addEventListener('click', function(){
+    modal.style.display = 'none';
+    restart();
+    document.addEventListener('keyup', keyInput);
 });
