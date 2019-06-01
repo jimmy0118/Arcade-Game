@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    background-color: #233848;
 }
 
 .container {
@@ -13,7 +14,7 @@ header {
     font-family: 'Rajdhani', sans-serif;
     font-size: 25px;
     margin-bottom: 0px;
-    color: #ffff87;
+    color: #ffffff;
     text-shadow: 2px 2px 2px #0a0a0a;
 }
 
@@ -27,7 +28,7 @@ header {
     width: 450px;
     font-size: 40px;
     font-family: 'Wendy One', sans-serif;
-    color: #a2ef8a;
+    color: #ffd34d;
     text-shadow: 2px 2px 3px #0a0a0a;
 }
 
