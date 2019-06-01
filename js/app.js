@@ -39,12 +39,14 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.x = -100;
         const randomSpeed = Math.floor(Math.random() * 10 + 1);
-        this.speed = 60 * randomSpeed;
+        this.speed = 50 * randomSpeed;
     }
     this.checkCollisions();
     panelLive.textContent = `Lives: ${lives}`;
     panelScore.textContent = `Score: ${score}`;
     modalScore.textContent = `Your Score: ${score}`;
+    // Change difficulty based on score
+    this.setDifficulty();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -79,6 +81,30 @@ Enemy.prototype.collisionHappen = function() {
     }
 };
 
+// For changing difficulty
+let originalDifficulty = 1;
+let newDifficulty = 1;
+
+// Function for setDifficulty
+Enemy.prototype.setDifficulty = function() {
+    if (score >= 100 && score < 200) {
+        newDifficulty = 2;
+    } else if (score >= 200) {
+        newDifficulty = 3;
+    }
+    this.addEnemy();
+};
+
+// Function for addEnemy
+Enemy.prototype.addEnemy = function() {
+    if (originalDifficulty < newDifficulty) {
+        for (let i = 0; i < 3; i++) {
+            const randomSpeed = Math.floor(Math.random() * 10 + 1);
+            allEnemies.push(new Enemy(-101, 60 + (83 * i), 50 * randomSpeed));
+        }
+        originalDifficulty += 1;
+    }
+};
 /*----------------------------------------------------------------------------*/
 /*------------------------------Player----------------------------------------*/
 
@@ -256,7 +282,7 @@ var allEnemies = [];
 // Instantiate all enemies and push them to allEnemies array
 for (let i = 0; i < 3; i++) {
     const randomSpeed = Math.floor(Math.random() * 10 + 1);
-    allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
+    allEnemies.push(new Enemy(-101, 60 + (83 * i), 50 * randomSpeed));
 }
 
 // Instantiate Gem
@@ -303,6 +329,6 @@ function restart() {
     // Instantiate all enemies and push them to allEnemies array
     for (let i = 0; i < 3; i++) {
         const randomSpeed = Math.floor(Math.random() * 10 + 1);
-        allEnemies.push(new Enemy(-101, 60 + (83 * i), 60 * randomSpeed));
+        allEnemies.push(new Enemy(-101, 60 + (83 * i), 50 * randomSpeed));
     }
 }
