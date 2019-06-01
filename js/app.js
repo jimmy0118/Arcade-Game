@@ -260,7 +260,7 @@ Gem.prototype.resetPosition = function() {
     setTimeout(function() {
         gem.x = (101 * Math.floor(Math.random() * 4) + 0);
         gem.y = (60 + (83 * Math.floor(Math.random() * 3) + 0));
-    }, 7000);
+    }, 5000);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -325,6 +325,8 @@ replay.addEventListener('click', function(){
 function restart() {
     lives = 5;
     score = 0;
+    originalDifficulty = 1;
+    newDifficulty = 1;
     allEnemies = [];
     // Instantiate all enemies and push them to allEnemies array
     for (let i = 0; i < 3; i++) {
